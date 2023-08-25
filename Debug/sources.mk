@@ -19,4 +19,5 @@ C_DEPS :=
 SUBDIRS := \
 application \
 boot \
+kernel \
 

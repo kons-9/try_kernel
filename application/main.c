@@ -1,6 +1,4 @@
-#include "typedef.h"
-#include "sysdef.h"
-#include "syslib.h"
+#include <trykernel.h>
 
 static void delay_ms(UINT ms) {
     UINT cnt = ms / TIMER_PERIOD;
@@ -13,9 +11,12 @@ static void delay_ms(UINT ms) {
 }
 
 int main(void) {
+    tm_com_init();
+    tm_putstring("Hello World!\n");
     while (1) {
         out_w(GPIO_OUT_XOR, (1 << 25));
         delay_ms(500);
+        tm_putstring("Hello World!\n");
     }
     return 0;
 }
