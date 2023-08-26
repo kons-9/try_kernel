@@ -2,7 +2,7 @@
 #define SYSLIB_H
 
 #include "typedef.h"
-//#include "sysdef.h"
+// #include "sysdef.h"
 
 static inline UW in_w(UW adr) {
     return *(_UW *)adr;
@@ -26,6 +26,10 @@ static inline void xset_w(UW adr, UW data) {
     *(_UW *)(adr + OP_XOR) = data;
 }
 
+// note: inline assembler
+// note: __asm__ volatile("assembly code" : output : input : clobber)
+// note: "hoge .., %0" ::"r"(fuge) means that fuge is assigned to %0
+// note: "hoge %0, .. " : "=r"(fuge) means that %0 is assigned to fuge
 static inline void set_primask(INT pm) {
     __asm__ volatile("msr primask, %0" ::"r"(pm));
 }

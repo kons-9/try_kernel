@@ -1,13 +1,28 @@
 #include <trykernel.h>
 
-UINT cur_task = 0;
-UINT next_task = 0;
-#define MAX_FNC_ID 2
-void *ctx_tbl[MAX_FNC_ID];
+ID tskid_1;
+ID tskid_2;
+UW tskstk_1[1024 / sizeof(UW)];
+UW tskstk_2[1024 / sizeof(UW)];
+void task_1(void);
+void task_2(void);
 
-#define STACK_SIZE 1024
-UW stack_1[STACK_SIZE];
-UW stack_2[STACK_SIZE];
+T_CTSK ctsk_1 = {
+    .tskatr = TA_HLNG | TA_RNG3 | TA_USERBUF,
+    .task = task_1,
+    .itskpri = 10,
+    .stksz = 1024,
+    .bufptr = tskstk_1,
+};
+
+T_CTSK ctsk_2 = {
+    .tskatr = TA_HLNG | TA_RNG3 | TA_USERBUF,
+    .task = task_2,
+    .itskpri = 10,
+    .stksz = 1024,
+    .bufptr = tskstk_2,
+};
+
 
 static void delay_ms(UINT ms) {
     UINT cnt = ms / TIMER_PERIOD;
@@ -20,35 +35,23 @@ static void delay_ms(UINT ms) {
 }
 
 void task_1(void) {
-    while (1) {
-        tm_putstring("Task 1: Hello World!\n");
-        out_w(GPIO_OUT_SET, (1 << 25));
-        delay_ms(500);
-        next_task = 2;
-        dispatch();
-    }
+    tm_putstring("Task 1: Hello World!\n");
+    tk_ext_tsk();
 }
 
 void task_2(void) {
-    while (1) {
-        tm_putstring("Task 2: Hello World!\n");
-        out_w(GPIO_OUT_CLR, (1 << 25));
-        delay_ms(500);
-        next_task = 1;
-        dispatch();
-    }
+    tm_putstring("Task 2: Hello World!\n");
+    tk_ext_tsk();
 }
 
-int main(void) {
-    tm_com_init();
+int usermain(void) {
     tm_putstring("Initilizing...\n");
 
-    ctx_tbl[0] = make_context(&stack_1[STACK_SIZE], STACK_SIZE, task_1);
-    ctx_tbl[1] = make_context(&stack_2[STACK_SIZE], STACK_SIZE, task_2);
+    tskid_1 = tk_cre_tsk(&ctsk_1);
+    tk_sta_tsk(tskid_1, 0);
 
-    next_task = 1;
-    tm_putstring("Starting...\n");
-    dispatch();
+    tskid_2 = tk_cre_tsk(&ctsk_2);
+    tk_sta_tsk(tskid_2, 0);
 
     return 0;
 }
