@@ -14,7 +14,12 @@ void systimer_handler(void) {
         } else {
             // wake up
             tqueue_remove_entry(&wait_queue, tcb);
-            *tcb->waierr = E_OK;
+
+            if (tcb->waifct == TWFCT_DLY) {
+                *tcb->waierr = E_OK;
+            } else {
+                *tcb->waierr = E_TMOUT;
+            }
             tcb->state = TS_READY;
             tcb->waifct = TWFCT_NON;
 

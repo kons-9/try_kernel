@@ -31,6 +31,7 @@ typedef enum {
 typedef enum {
     TWFCT_NON = 0,
     TWFCT_DLY = 1,
+    TWFCT_SLP = 2,
 } TWFCT;
 
 typedef struct st_tcb {
@@ -43,6 +44,7 @@ typedef struct st_tcb {
     PRI itskpri;   // task priority
     void *stkadr;  // stack address
     SZ stksz;      // stack size
+    INT wupcnt;    // wakeup count
 
     TWFCT waifct;   // wait factor
     RELTIM waitim;  // wait time

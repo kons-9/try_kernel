@@ -29,4 +29,8 @@ void tk_ext_tsk(void);
 // input (delay time)
 ER tk_dly_tsk(RELTIM dlytim);
 
+ER tk_slp_tsk(TMO tmout);
+ER tk_wup_tsk(ID tskid);
+
+
 #endif
