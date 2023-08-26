@@ -1,11 +1,12 @@
+#include "syslib.h"
 #include <trykernel.h>
 
 ID tskid_1;
 ID tskid_2;
 UW tskstk_1[1024 / sizeof(UW)];
 UW tskstk_2[1024 / sizeof(UW)];
-void task_1(void);
-void task_2(void);
+void task_1(INT stacd, void *exinf);
+void task_2(INT stacd, void *exinf);
 
 T_CTSK ctsk_1 = {
     .tskatr = TA_HLNG | TA_RNG3 | TA_USERBUF,
@@ -34,14 +35,20 @@ static void delay_ms(UINT ms) {
     }
 }
 
-void task_1(void) {
+void task_1(INT stacd, void *exinf) {
     tm_putstring("Task 1: Hello World!\n");
-    tk_ext_tsk();
+    while (1) {
+        out_w(GPIO_OUT_XOR, (1 << 25));
+        tk_dly_tsk(500);
+    }
 }
 
-void task_2(void) {
+void task_2(INT stacd, void *exinf) {
     tm_putstring("Task 2: Hello World!\n");
-    tk_ext_tsk();
+    while (1) {
+        tm_putstring("Task 2: Waiting for 1 second...\n");
+        tk_dly_tsk(1000);
+    }
 }
 
 int usermain(void) {

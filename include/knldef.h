@@ -27,6 +27,12 @@ typedef enum {
     TS_DORMANT = 3,
 } TSTAT;
 
+// task wait factor
+typedef enum {
+    TWFCT_NON = 0,
+    TWFCT_DLY = 1,
+} TWFCT;
+
 typedef struct st_tcb {
     void *context;
     struct st_tcb *pre;
@@ -37,17 +43,23 @@ typedef struct st_tcb {
     PRI itskpri;   // task priority
     void *stkadr;  // stack address
     SZ stksz;      // stack size
+
+    TWFCT waifct;   // wait factor
+    RELTIM waitim;  // wait time
+    ER *waierr;     // wait error
 } TCB;
 
 extern TCB tcb_tbl[];
 extern TCB *ready_queue[];
 extern TCB *cur_task;
 extern TCB *sche_task;
+extern TCB *wait_queue;
 
 extern void tqueue_add_entry(TCB **queue, TCB *tcb);
 extern void tqueue_remove_top(TCB **que);
 extern void tqueue_remove_entry(TCB **que, TCB *tcb);
 
 extern void scheduler(void);
+
 
 #endif

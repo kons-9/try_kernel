@@ -134,11 +134,12 @@ static void init_section(void) {
     }
 }
 static void init_system(void) {
-    out_w(SYST_CSR, SYST_CSR_CLKSOURCE);
+    out_w(SYST_CSR, SYST_CSR_CLKSOURCE | SYST_CSR_TICKINT);
     out_w(SYST_RVR, (TIMER_PERIOD * TMCLK_KHz) - 1);
     out_w(SYST_CVR, (TIMER_PERIOD * TMCLK_KHz) - 1);
-    out_w(SYST_CSR, SYST_CSR_CLKSOURCE | SYST_CSR_ENABLE);
+    out_w(SYST_CSR, SYST_CSR_CLKSOURCE | SYST_CSR_TICKINT | SYST_CSR_ENABLE);
 }
+
 static void init_pll(UW pll, UINT refdiv, UINT vco_freq, UINT post_div1, UINT post_div2) {
     UW ref_mhz, fbdiv, pdiv;
     UW pll_reset;
