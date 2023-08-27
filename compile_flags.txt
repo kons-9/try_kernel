@@ -1,5 +1,3 @@
--x
-c++
--std=c++2b
+-std=c99
 -I
 include/

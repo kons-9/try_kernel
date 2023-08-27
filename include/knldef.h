@@ -32,6 +32,7 @@ typedef enum {
     TWFCT_NON = 0,
     TWFCT_DLY = 1,
     TWFCT_SLP = 2,
+    TWFCT_FLG = 3,
 } TWFCT;
 
 typedef struct st_tcb {
@@ -46,9 +47,12 @@ typedef struct st_tcb {
     SZ stksz;      // stack size
     INT wupcnt;    // wakeup count
 
-    TWFCT waifct;   // wait factor
-    RELTIM waitim;  // wait time
-    ER *waierr;     // wait error
+    TWFCT waifct;    // wait factor
+    RELTIM waitim;   // wait time
+    ER *waierr;      // wait error
+    UINT waiptn;     // wait pattern
+    UINT wfmode;     // wait mode
+    UINT *p_flgptn;  // flag pattern
 } TCB;
 
 extern TCB tcb_tbl[];
@@ -63,5 +67,14 @@ extern void tqueue_remove_entry(TCB **que, TCB *tcb);
 
 extern void scheduler(void);
 
+typedef enum {
+    KS_NONEXIST = 0,
+    KS_EXIST = 1,
+} KSSTAT;
+
+typedef struct st_flgcb {
+    KSSTAT state;
+    UINT flgptn;
+} FLGCB;
 
 #endif

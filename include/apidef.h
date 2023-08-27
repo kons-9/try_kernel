@@ -21,6 +21,12 @@ typedef struct {
     void *bufptr;
 } T_CTSK;
 
+
+typedef struct t_cflg {
+    ATR flgatr;
+    UINT iflgptn;
+} T_CFLG;
+
 // input (pointer to information of create task)
 ID tk_cre_tsk(T_CTSK *pk_ctsk);
 // input (task id, status code)
@@ -32,5 +38,23 @@ ER tk_dly_tsk(RELTIM dlytim);
 ER tk_slp_tsk(TMO tmout);
 ER tk_wup_tsk(ID tskid);
 
+#define TA_TFIFO 0x00000000
+#define TA_TPRI 0x00000001
+
+#define TA_FIRST 0x00000000
+#define TA_CNT 0x00000002
+
+#define TA_WSGL 0x00000000
+#define TA_WMUL 0x00000008
+// event flag
+ID tk_cre_flg(const T_CFLG *pk_cflg);
+ER tk_set_flg(ID flgid, UINT setptn);
+ER tk_clr_flg(ID flgid, UINT clrptn);
+ER tk_wai_flg(ID flgid, UINT waiptn, UINT wfmode, UINT *p_flgptn, TMO tmout);
+
+#define TWF_ANDW 0x00000000
+#define TWF_ORW 0x00000001
+#define TWF_CLR 0x00000010
+#define TWF_BITCLR 0x00000020
 
 #endif
