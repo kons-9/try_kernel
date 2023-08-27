@@ -44,9 +44,9 @@ void task_led1(INT stacd, void *exinf) {
         tk_wai_flg(flgid, 1 << 0, TWF_ANDW | TWF_BITCLR, &flgptn, TMO_FEVR);
         tm_putstring("led1\n");
         for (INT i = 0; i < 3; i++) {
-            out_w(GPIO_OUT_SET, (1 << 24));
+            out_w(GPIO_OUT_SET, (1 << 25));
             tk_dly_tsk(500);
-            out_w(GPIO_OUT_CLR, (1 << 24));
+            out_w(GPIO_OUT_CLR, (1 << 25));
             tk_dly_tsk(500);
         }
     }

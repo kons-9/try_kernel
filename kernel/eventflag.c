@@ -46,6 +46,7 @@ ER tk_set_flg(ID flgid, UINT setptn) {
 
     DI(intsts);
 
+    flgid--;
     flgcb = &flgcb_tbl[flgid];
     if (flgcb->state == KS_EXIST) {
         flgcb->flgptn |= setptn;
@@ -95,7 +96,7 @@ ER tk_clr_flg(ID flgid, UINT clrptn) {
     }
 
     DI(intsts);
-
+    flgid--;
     flgcb = &flgcb_tbl[flgid];
     if (flgcb->state == KS_EXIST) {
         flgcb->flgptn &= ~(clrptn);
