@@ -38,6 +38,7 @@ T_CTSK ctsk_btn = {
 };
 
 void task_led1(INT stacd, void *exinf) {
+    tm_putstring("task_led1 starting...");
     UINT flgptn;
     while (1) {
         tk_wai_flg(flgid, 1 << 0, TWF_ANDW | TWF_BITCLR, &flgptn, TMO_FEVR);
@@ -52,6 +53,7 @@ void task_led1(INT stacd, void *exinf) {
 }
 
 void task_led2(INT stacd, void *exinf) {
+    tm_putstring("task_led2 starting...");
     UINT flgptn;
     while (1) {
         ER err = tk_wai_flg(flgid, 1 << 1, TWF_ANDW | TWF_BITCLR, &flgptn, TMO_FEVR);
@@ -70,15 +72,16 @@ void task_led2(INT stacd, void *exinf) {
 }
 
 void task_btn(INT stacd, void *exinf) {
+    tm_putstring("task_btn starting...");
     UW btn, btn0, diff;
 
     out_w(GPIO(13), (in_w(GPIO(13)) | GPIO_PUE) & ~GPIO_PDE);  // pullup
     out_w(GPIO_OE_CLR, (1 << 13));                             // disable output
-    out_w(GPIO(13), 5);                                        // set as input
+    out_w(GPIO_CTRL(13), 5);                                   // set as input
 
     out_w(GPIO(14), (in_w(GPIO(14)) | GPIO_PUE) & ~GPIO_PDE);  // pullup
     out_w(GPIO_OE_CLR, (1 << 14));                             // disable output
-    out_w(GPIO(14), 5);                                        // set as input
+    out_w(GPIO_CTRL(14), 5);                                   // set as input
 
     // prev state
     btn0 = in_w(GPIO_IN) & ((1 << 13) | (1 << 14));
